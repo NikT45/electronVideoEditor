@@ -3,9 +3,10 @@ import { CreateProjectData, DEFAULT_RESOLUTIONS, DEFAULT_FRAME_RATES } from '../
 
 interface CreateProjectProps {
   onProjectCreate: (projectData: CreateProjectData) => void;
+  onBack: () => void;
 }
 
-export default function CreateProject({ onProjectCreate }: CreateProjectProps) {
+export default function CreateProject({ onProjectCreate, onBack }: CreateProjectProps) {
   const [formData, setFormData] = useState<CreateProjectData>({
     name: '',
     description: '',
@@ -55,18 +56,29 @@ export default function CreateProject({ onProjectCreate }: CreateProjectProps) {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-xl shadow-lg overflow-hidden">
+    <div className="min-h-screen bg-zinc-900 flex items-center justify-center p-4" style={{ paddingTop: '60px' }}>
+      <div className="max-w-md w-full bg-zinc-800 rounded-xl shadow-lg overflow-hidden border border-zinc-700">
         <div className="p-8">
+          {/* Back Button */}
+          <button
+            onClick={onBack}
+            className="flex items-center space-x-2 text-zinc-400 hover:text-zinc-200 transition-colors mb-6"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            <span>Back</span>
+          </button>
+
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-zinc-900 mb-2">Create New Project</h1>
-            <p className="text-zinc-600">Set up your video editing project</p>
+            <h1 className="text-2xl font-bold text-zinc-100 mb-2">Create New Project</h1>
+            <p className="text-zinc-400">Set up your video editing project</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Project Name */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-zinc-700 mb-2">
+              <label htmlFor="name" className="block text-sm font-medium text-zinc-300 mb-2">
                 Project Name
               </label>
               <input
@@ -74,7 +86,7 @@ export default function CreateProject({ onProjectCreate }: CreateProjectProps) {
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                className="w-full px-3 py-2 border border-zinc-300 rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:border-transparent"
+                className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 text-zinc-100 rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent placeholder-zinc-400"
                 placeholder="My Video Project"
                 required
               />
@@ -82,7 +94,7 @@ export default function CreateProject({ onProjectCreate }: CreateProjectProps) {
 
             {/* Description */}
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-zinc-700 mb-2">
+              <label htmlFor="description" className="block text-sm font-medium text-zinc-300 mb-2">
                 Description (Optional)
               </label>
               <textarea
@@ -90,14 +102,14 @@ export default function CreateProject({ onProjectCreate }: CreateProjectProps) {
                 value={formData.description}
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                 rows={3}
-                className="w-full px-3 py-2 border border-zinc-300 rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:border-transparent"
+                className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 text-zinc-100 rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent placeholder-zinc-400"
                 placeholder="Brief description of your project"
               />
             </div>
 
             {/* Project Location */}
             <div>
-              <label className="block text-sm font-medium text-zinc-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-300 mb-2">
                 Project Location
               </label>
               <div className="flex gap-2">
@@ -105,13 +117,13 @@ export default function CreateProject({ onProjectCreate }: CreateProjectProps) {
                   type="text"
                   value={formData.projectPath}
                   readOnly
-                  className="flex-1 px-3 py-2 bg-zinc-50 border border-zinc-300 rounded-md text-zinc-600"
+                  className="flex-1 px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-md text-zinc-400"
                   placeholder="Select folder..."
                 />
                 <button
                   type="button"
                   onClick={handleSelectFolder}
-                  className="px-4 py-2 bg-zinc-600 text-white rounded-md hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-500"
+                  className="px-4 py-2 bg-zinc-600 text-white rounded-md hover:bg-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400"
                 >
                   Browse
                 </button>
@@ -120,7 +132,7 @@ export default function CreateProject({ onProjectCreate }: CreateProjectProps) {
 
             {/* Resolution */}
             <div>
-              <label htmlFor="resolution" className="block text-sm font-medium text-zinc-700 mb-2">
+              <label htmlFor="resolution" className="block text-sm font-medium text-zinc-300 mb-2">
                 Resolution
               </label>
               <select
@@ -130,7 +142,7 @@ export default function CreateProject({ onProjectCreate }: CreateProjectProps) {
                   const [width, height] = e.target.value.split('x').map(Number);
                   setFormData(prev => ({ ...prev, resolution: { width, height } }));
                 }}
-                className="w-full px-3 py-2 border border-zinc-300 rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-500"
+                className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 text-zinc-100 rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-400"
               >
                 {DEFAULT_RESOLUTIONS.map((res) => (
                   <option key={`${res.width}x${res.height}`} value={`${res.width}x${res.height}`}>
@@ -142,14 +154,14 @@ export default function CreateProject({ onProjectCreate }: CreateProjectProps) {
 
             {/* Frame Rate */}
             <div>
-              <label htmlFor="frameRate" className="block text-sm font-medium text-zinc-700 mb-2">
+              <label htmlFor="frameRate" className="block text-sm font-medium text-zinc-300 mb-2">
                 Frame Rate
               </label>
               <select
                 id="frameRate"
                 value={formData.frameRate}
                 onChange={(e) => setFormData(prev => ({ ...prev, frameRate: Number(e.target.value) }))}
-                className="w-full px-3 py-2 border border-zinc-300 rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-500"
+                className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 text-zinc-100 rounded-md focus:outline-none focus:ring-2 focus:ring-zinc-400"
               >
                 {DEFAULT_FRAME_RATES.map((rate) => (
                   <option key={rate} value={rate}>
@@ -161,8 +173,8 @@ export default function CreateProject({ onProjectCreate }: CreateProjectProps) {
 
             {/* Error Message */}
             {error && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-md">
-                <p className="text-sm text-red-600">{error}</p>
+              <div className="p-3 bg-red-900/50 border border-red-700 rounded-md">
+                <p className="text-sm text-red-300">{error}</p>
               </div>
             )}
 
@@ -170,7 +182,7 @@ export default function CreateProject({ onProjectCreate }: CreateProjectProps) {
             <button
               type="submit"
               disabled={isCreating}
-              className="w-full bg-zinc-900 text-white py-3 px-4 rounded-md hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full bg-zinc-100 text-zinc-900 py-3 px-4 rounded-md hover:bg-zinc-200 focus:outline-none focus:ring-2 focus:ring-zinc-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
             >
               {isCreating ? 'Creating Project...' : 'Create Project'}
             </button>

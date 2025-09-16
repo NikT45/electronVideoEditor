@@ -70,7 +70,12 @@ function App() {
   }
 
   if (currentState === 'create-project') {
-    return <CreateProject onProjectCreate={handleProjectCreate} />;
+    return (
+      <CreateProject
+        onProjectCreate={handleProjectCreate}
+        onBack={() => setCurrentState('welcome')}
+      />
+    );
   }
 
   // Main editor interface (placeholder for now)
